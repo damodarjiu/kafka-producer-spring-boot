@@ -22,15 +22,11 @@ import static java.util.stream.Collectors.toList;
 public class UserServiceImpl implements UserService {
 
   Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-  private static final String COMMA_DELIMITER = ",";
+
   @Autowired private ShareHoldingsKafkaWriter userKafkaWriter;
 
   @Override
   public void publishUserInformation() {
-
-    /* BufferedReader br =
-    new BufferedReader(
-            new InputStreamReader(getClass().getResourceAsStream("/sample-data.csv")))*/
     List<ShareHoldingsInformation> holdingsInformations = new ArrayList<>();
     try (CSVReader csvReader =
         new CSVReader(new InputStreamReader(getClass().getResourceAsStream("/sample-data.csv")))) {
@@ -39,7 +35,6 @@ public class UserServiceImpl implements UserService {
               .withType(ShareHoldingsInformation.class)
               .build()
               .parse();
-
     } catch (Exception ex) {
       logger.info(ex.getMessage());
     }
